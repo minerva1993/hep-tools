@@ -423,7 +423,7 @@ if [ _$PBS_ARRAYID != '_' ]; then
     FSECTION=`printf %03d $PBS_ARRAYID`
     SECTION=$PBS_ARRAYID
 elif [ _$SECTION != '_' ]; then
-    exprt FSECTION=`printf %03d $SECTION`
+    export FSECTION=`printf %03d $SECTION`
 else
     echo "JOB SECTION NUMBER IS MISSING!!!"
     exit 1

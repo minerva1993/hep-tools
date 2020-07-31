@@ -69,12 +69,20 @@ class TheSiteConfig:
             self.scheduler = "PBS"
             queue = "long"
         elif 'knu.ac.kr' in hostName: ## KNU T2/T3
-            self.site = "KNU"
-            self.scheduler = "PBS"
-            self.xrdSrv = 'cluster142.knu.ac.kr'
-            self.xrdBase = '/'
-            self.localBase = '/pnfs/knu.ac.kr/data/cms'
-            queue = "cms"
+            if 'cms02' in hostName:
+              self.site = "KNU"
+              self.scheduler = "CONDOR"
+              self.xrdSrv = 'cluster142.knu.ac.kr'
+              self.xrdBase = '/'
+              self.localBase = '/pnfs/knu.ac.kr/data/cms'
+              queue = "cms"
+            else:
+              self.site = "KNU"
+              self.scheduler = "PBS"
+              self.xrdSrv = 'cluster142.knu.ac.kr'
+              self.xrdBase = '/'
+              self.localBase = '/pnfs/knu.ac.kr/data/cms'
+              queue = "cms"
         elif hostName.endswith('sdfarm.kr'):
             self.site = "KISTI"
             self.scheduler = "CONDOR"
@@ -622,6 +630,13 @@ transfer_input_files = job.tar.gz""" % self.jobName.replace('/','_')
 accounting_group=group_cms
 +SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el6:latest"
 +SingularityBind = "/cvmfs, /cms, /share"'''
+            requirements.append("HasSingularity == true")
+
+        if self.config.site == "KNU":
+            osgVersion = "osgvo-el%s" % os.environ["SCRAM_ARCH"].split('_',1)[0][-1]
+            print>>jdlOut, '''
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/%s:latest"
++SingularityBind = "/cvmfs, /u/user, /home/user, /home/condor, /usr/libexec/condor"'''% (osgVersion)
             requirements.append("HasSingularity == true")
 
         if len(self.blacklist) > 0:

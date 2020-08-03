@@ -598,7 +598,7 @@ done""" % (' '.join(self.outFileNames), self.config.transferCmd, self.config.des
         submitFileName = "%s/submit.sh" % self.jobDir
         fout = open(submitFileName, "w")
         print>>fout, "#!/bin/bash"
-        print>>fout, self.config.submitCmd
+        print>>fout, self.config.submitCmd + ' -batch-name ' + self.jobName
         fout = None
         os.chmod(submitFileName, 0755)
 

@@ -69,7 +69,7 @@ class TheSiteConfig:
             self.scheduler = "PBS"
             queue = "long"
         elif 'knu.ac.kr' in hostName: ## KNU T2/T3
-            if 'cms02' in hostName:
+            if 'cms03' not in hostName:
               self.site = "KNU"
               self.scheduler = "CONDOR"
               self.xrdSrv = 'cluster142.knu.ac.kr'
